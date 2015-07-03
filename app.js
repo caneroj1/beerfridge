@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var bf = require('./routes/bf');
 
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', bf.home);
-app.get('/data', bf.get_data);
+app.get('/data', cors(), bf.get_data);
 app.post('/data', bf.post_data);
 
 
