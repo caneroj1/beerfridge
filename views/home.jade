@@ -2,23 +2,29 @@ extends layout
 
 block content
   .row
-    h1 Beer Fridge
+    h1 Beer Fridge Dashboard
   .row
-    .col.s3.offset-s3.fixed-height
+    .col.s3.fixed-height
       #thermometer
         #thermometer-top
           #thermometer-fill
         #thermometer-bottom
     .col.s3.fixed-height.valign-wrapper.center-align.full-width
       h1.valign#tmp= fridgeData['temp'] + " °F"
+    .col.s3.fixed-height.valign-wrapper
+      if fridgeData['fridge']
+        .circle.open#circle
+      else
+        .circle.closed#circle
+    .col.s3.fixed-height.valign-wrapper
+      if fridgeData['fridge']
+        h2#fri open
+      else
+        h2#fri closed
   .row 
     .col.s8.offset-s2
       h5 Real-time Temperature
       #tempChart
-  if fridgeData['fridge']
-    p#fri The fridge is open.
-  else
-    p#fri The fridge is closed.
   p#rem= "Bottles removed: " + fridgeData['removed']
   p#num= "Number of bottles: " + fridgeData['number_bottles']
   script(src="//code.jquery.com/jquery-2.1.0.min.js")
@@ -29,6 +35,8 @@ block content
     $('#tempChart').css('height', "250px");
     var currentTemp = "#{fridgeData['temp']}";
     var currentTime = new Date().getTime() / 1000
+    var prevFridge = "#{fridgeData['fridge']}";
+    
     var data = [
       { label: "Temperature", 
         values: [
@@ -50,9 +58,18 @@ block content
         dataType: 'json',
         success: function(response) {
           if(response['fridge'])
-            $('#fri').text('The fridge is open.')
+            $('#fri').text('open')
           else
-            $('#fri').text('The fridge is closed.')
+            $('#fri').text('closed')
+          
+          if(response['fridge'] != prevFridge)
+            $('#circle').fadeOut(250, function() {
+              $('#circle').toggleClass('open');
+              $('#circle').toggleClass('closed');
+              $('#circle').fadeIn(250);
+              prevFridge = response['fridge'];
+            });
+          
           var fillPercentage = parseFloat(response['temp']) / 100.0;
           var fillHeight = fillPercentage * ( $('#thermometer-top').height());
           $('#thermometer-fill').css('height', 12 + fillHeight);
