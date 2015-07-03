@@ -16,7 +16,7 @@ exports.post_data = function(req, res) {
   });
   fridgeData = merge(fridgeData, req.body);
   fridgeData['floatTemp'] = floatTemp;
-  if(typeof(req.body['diff']) != undefined)
-    fridgeData['diff'] = prevDiff + parseInt(req.body['diff']);
+  if(req.body['diff'])
+    fridgeData['diff'] = prevDiff + req.body['diff'];
   res.json(fridgeData);
 };
