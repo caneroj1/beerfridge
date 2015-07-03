@@ -11,26 +11,48 @@ block content
         #thermometer-bottom
     .col.s3.fixed-height.valign-wrapper.center-align.full-width
       h1.valign#tmp= fridgeData['temp'] + " °F"
+  .row 
+    .col.s8.offset-s2
+      h5 Real-time Temperature
+      #tempChart
   if fridgeData['fridge']
     p#fri The fridge is open.
   else
     p#fri The fridge is closed.
-  //- p#tmp= "Temperature: " + fridgeData['temp']
   p#rem= "Bottles removed: " + fridgeData['removed']
   p#num= "Number of bottles: " + fridgeData['number_bottles']
   script(src="//code.jquery.com/jquery-2.1.0.min.js")
+  script(src="/javascripts/d3.min.js")
+  script(src="/javascripts/epoch.min.js")
   script(type='text/javascript').
+    $('#tempChart').css('width', "100%");
+    $('#tempChart').css('height', "250px");
+    var currentTemp = "#{fridgeData['temp']}";
+    var currentTime = new Date().getTime() / 1000
+    var data = [
+      { label: "Temperature", 
+        values: [
+          {
+            time: currentTime, 
+            y: currentTemp
+          }
+        ] 
+      } 
+    ];
+    var tempChart = $('#tempChart').epoch({
+      type: "time.line", 
+      data: data,
+      axes: ['left', 'bottom']
+    });
     setInterval(function() {
       $.ajax({
         url: 'http://localhost:3000/data',
         dataType: 'json',
         success: function(response) {
-          if(response['fridge']) {
+          if(response['fridge'])
             $('#fri').text('The fridge is open.')
-          }
-          else {
+          else
             $('#fri').text('The fridge is closed.')
-          }
           var fillPercentage = parseFloat(response['temp']) / 100.0;
           var fillHeight = fillPercentage * ( $('#thermometer-top').height());
           $('#thermometer-fill').css('height', 12 + fillHeight);
@@ -38,6 +60,8 @@ block content
           $('#tmp').text(response['temp'] + ' °F');
           $('#rem').text('Bottles removed: ' + response['removed']);
           $('#num').text('Number of bottles: ' + response['number_bottles']);
+          currentTime = new Date().getTime() / 1000;
+          tempChart.push([{time: currentTime, y: parseFloat(response['floatTemp'])}]);
         }
       })
-    }, 500)
+    }, 500);

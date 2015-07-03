@@ -13,7 +13,8 @@ fridgeData = {
   fridge:         0,
   temp:           0,
   number_bottles: 0,
-  removed:        0
+  removed:        0,
+  float_temp:     0.0
 };
 
 // view engine setup
