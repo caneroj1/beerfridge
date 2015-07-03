@@ -47,7 +47,7 @@ BOTTOM_RIGHT = 1
 TOP_LEFT = 2
 BOTTOM_LEFT = 3
 BLUETOOTH_NAME = "Nintendo RVL-WBC-01"
-SERVER = "http://192.168.1.11:8080"
+SERVER = "http://192.168.1.11:3000"
 
 def post(url, params):
     print "posting...."

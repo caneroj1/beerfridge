@@ -68,7 +68,7 @@ block content
     });
     setInterval(function() {
       $.ajax({
-        url: 'http://localhost:3000/data',
+        url: 'http://192.168.1.11:3000/data',
         dataType: 'json',
         success: function(response) {
           if(response['fridge'])
