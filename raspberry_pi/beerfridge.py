@@ -125,11 +125,11 @@ class EventProcessor:
                         for x in range(0, self._bottlesPrev-self.bottles):
                             print "Bottle removed"
                         post(SERVER, dict(diff = self.bottles - self._bottlesPrev))
-                    self._bottlesPrev = self.bottles
                     if (self._bottlesPrev != -1) and (self._bottlesPrev < self.bottles):
                         for x in range(0, self.bottles - self._bottlesPrev):
                             print "Bottle added"
                         post(SERVER, dict(diff = self.bottles - self._bottlesPrev))
+                    self._bottlesPrev = self.bottles
                 print str(self.bottles) + " Bottles"
                 print "Measurement complete!"
                 self._takeMeasurement = False
