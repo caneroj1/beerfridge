@@ -76,7 +76,6 @@ def readTemp():
         return tempC
 
 def streamTemp():
-    # streamer = Streamer(bucket_name=BUCKET_NAME,bucket_key=BUCKET_KEY,access_key=ACCESS_KEY)
     while True:
         tempC = readTemp()
         tempF = tempC * 9.0 / 5.0 + 32.0
@@ -93,15 +92,12 @@ class EventProcessor:
         self._bottlesPrev = -1
         self._doorStatus = False
         self._takeMeasurement = False
-        # self.streamer = Streamer(bucket_name=BUCKET_NAME,bucket_key=BUCKET_KEY,access_key=ACCESS_KEY)
 
     def mass(self, event):
         # Take measurement ony when the door closes
         if (self._doorStatus == True and event.doorStatus == False):
             self._takeMeasurement = True
             self._measureCnt = 0
-            # self.streamer.log("Door", "Closed")
-            # self.streamer.flush()
             post(SERVER, dict(fridge = 0))
             print "Door Closed"
             print "Starting measurement ..."
@@ -109,8 +105,6 @@ class EventProcessor:
         # Door is opened, ensure no measurement is being taken
         if (self._doorStatus == False and event.doorStatus == True):
             self._takeMeasurement = False
-            # self.streamer.log("Door", "Open")
-            # self.streamer.flush()
             post(SERVER, dict(fridge = 1))
             print "Door Opened"
         if (self._takeMeasurement == True and event.totalWeight > 2):
@@ -126,16 +120,16 @@ class EventProcessor:
                 self._measureCnt = 0
                 print str(self._weight) + " lbs total, " + str(self._weightBottles) + " lbs in bottles"
                 if (self.bottles != self._bottlesPrev) and (self.bottles >= 0):
-                    # self.streamer.log("Bottles Present", self.bottles)
-                    # self.streamer.flush()
                     post(SERVER, dict(number_bottles = self.bottles))
                     if (self._bottlesPrev != -1) and (self._bottlesPrev > self.bottles):
                         for x in range(0, self._bottlesPrev-self.bottles):
                             print "Bottle removed"
-                            # self.streamer.log("Bottle Removed", "1")
-                            # self.streamer.flush()
-                            post(SERVER, dict(removed = 1))
+                        post(SERVER, dict(diff = self._bottlesPrev-self.bottles))
                     self._bottlesPrev = self.bottles
+                    if (self._bottlesPrev != -1) and (self._bottlesPrev < self.bottles):
+                        for x in range(0, self.bottles - self._bottlesPrev):
+                            print "Bottle added"
+                        post(SERVER, dict(diff = self.bottles - self._bottlesPrev))
                 print str(self.bottles) + " Bottles"
                 print "Measurement complete!"
                 self._takeMeasurement = False

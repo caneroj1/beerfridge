@@ -15,6 +15,16 @@ body
   width: 100%;
 }
 
+.half-width
+{
+  width: 50%;
+}
+
+.inline
+{
+  display: inline-block;
+}
+
 h1,
 h2,
 h3,
@@ -71,8 +81,8 @@ p
   height:150px;
   margin:auto;
   background-color: #4caf50;
-  box-shadow: 0px 0px 30px 10px #4caf50;
-  animation: openPulse 0.6s infinite;
+  box-shadow: 0px 0px 40px 10px #4caf50;
+  animation: openPulse 0.9s infinite;
   animation-direction: alternate;
   -webkit-animation: openPulse 0.9s ease-out infinite;
   -webkit-animation-direction: alternate;
@@ -84,27 +94,90 @@ p
   height:150px;
   margin:auto;
   background-color: #f44336;
-  box-shadow: 0px 0px 30px 10px #f44336;
-  animation: closedPulse 0.6s infinite;
+  box-shadow: 0px 0px 40px 10px #f44336;
+  animation: closedPulse 0.9s infinite;
   animation-direction: alternate;
   -webkit-animation: closedPulse 0.9s ease-out infinite;
   -webkit-animation-direction: alternate;
 }
 
 @keyframes openPulse {
-	from {box-shadow: 0 0 30px 10px rgba(76, 175, 80, 1);}
-	to {box-shadow: 0 0 30px 10px rgba(76, 175, 80, .2);}
+	from {box-shadow: 0 0 40px 10px rgba(76, 175, 80, 1);}
+	to {box-shadow: 0 0 40px 10px rgba(76, 175, 80, .2);}
 }
 @-webkit-keyframes openPulse {
-	from {box-shadow: 0 0 30px 10px rgba(76, 175, 80, 1);}
-	to {box-shadow: 0 0 30px 10px rgba(76, 175, 80, .2);}
+	from {box-shadow: 0 0 40px 10px rgba(76, 175, 80, 1);}
+	to {box-shadow: 0 0 40px 10px rgba(76, 175, 80, .2);}
 }
 
 @keyframes closedPulse {
-	from {box-shadow: 0 0 30px 10px rgba(244, 67, 54, 1);}
-	to {box-shadow: 0 0 30px 10px rrgba(244, 67, 54, .2);}
+	from {box-shadow: 0 0 40px 10px rgba(244, 67, 54, 1);}
+	to {box-shadow: 0 0 40px 10px rgba(244, 67, 54, .2);}
 }
 @-webkit-keyframes closedPulse {
-	from {box-shadow: 0 0 30px 10px rgba(244, 67, 54, 1);}
-	to {box-shadow: 0 0 30px 10px rrgba(244, 67, 54, .2);}
+	from {box-shadow: 0 0 40px 10px rgba(244, 67, 54, 1);}
+	to {box-shadow: 0 0 40px 10px rgba(244, 67, 54, .2);}
+}
+
+.arrow-container
+{
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin: 20px auto;
+}
+
+.arrow
+{
+  transition: all 0.5s ease;
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: 40px solid transparent;
+}
+
+.arrow:after
+{
+  transition: all 0.5s ease;
+  background-color: #206060;
+}
+
+.arrow:hover:after
+{
+  background-color: #40bfbf;
+}
+
+.arrow:active:after
+{
+  background-color: #20dfdf;
+}
+
+.up
+{
+  top: -35px;
+  left: -15px;
+  border-bottom-color: #00e676;
+}
+
+.up:after
+{
+  display: block;
+}
+
+.down
+{
+  top: 10px;
+  left: -15px;
+  border-top-color: #ff1744;
+}
+
+.down:after
+{
+  display: block;
+}
+
+.card-title
+{
+  font-size:25px;
+  font-weight:200;
 }

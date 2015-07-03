@@ -25,8 +25,22 @@ block content
     .col.s8.offset-s2
       h5 Real-time Temperature
       #tempChart
-  p#rem= "Bottles removed: " + fridgeData['removed']
-  p#num= "Number of bottles: " + fridgeData['number_bottles']
+  .row
+    .col.s3.offset-s1
+      .card-panel.teal
+        .card-content.white-text.left-align
+          span.card-title Count
+        .card-action.valign-wrapper
+          img.half-width.inline(src="/images/beer-icon.png")
+          h1.half-width.inline.white-text#num= fridgeData['number_bottles']
+    .col.s3.offset-s4
+      .card-panel.teal
+        .card-content.white-text.left-align
+          span.card-title Difference
+        .card-action.valign-wrapper
+          h1.half-width.inline.white-text#rem= fridgeData['diff']
+          .arrow-container
+            #indicator.arrow
   script(src="//code.jquery.com/jquery-2.1.0.min.js")
   script(src="/javascripts/d3.min.js")
   script(src="/javascripts/epoch.min.js")
@@ -75,8 +89,14 @@ block content
           $('#thermometer-fill').css('height', 12 + fillHeight);
           $('#thermometer-bottom span').text(Math.round(fillPercentage * 100));
           $('#tmp').text(response['temp'] + ' °F');
-          $('#rem').text('Bottles removed: ' + response['removed']);
-          $('#num').text('Number of bottles: ' + response['number_bottles']);
+          $('#rem').text(response['diff']);
+          if(response['diff'] < 0)
+            $('#indicator').addClass('down').removeClass('up');
+          else if(response['diff'] > 0)
+            $('#indicator').removeClass('down').addClass('up');
+          else
+            $('#indicator').removeClass('down').removeClass('up');
+          $('#num').text(response['number_bottles']);
           currentTime = new Date().getTime() / 1000;
           tempChart.push([{time: currentTime, y: parseFloat(response['floatTemp'])}]);
         }
