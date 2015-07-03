@@ -124,7 +124,7 @@ class EventProcessor:
                     if (self._bottlesPrev != -1) and (self._bottlesPrev > self.bottles):
                         for x in range(0, self._bottlesPrev-self.bottles):
                             print "Bottle removed"
-                        post(SERVER, dict(diff = self._bottlesPrev-self.bottles))
+                        post(SERVER, dict(diff = self.bottles - self._bottlesPrev))
                     self._bottlesPrev = self.bottles
                     if (self._bottlesPrev != -1) and (self._bottlesPrev < self.bottles):
                         for x in range(0, self.bottles - self._bottlesPrev):
